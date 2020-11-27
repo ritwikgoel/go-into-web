@@ -14,7 +14,7 @@ import (
 
 func test() error {
         // Create arbitrary command.
-        c := exec.Command("bash")
+        c := exec.Command("ls")
 
         // Start the command with a pty.
         ptmx, err := pty.Start(c)
