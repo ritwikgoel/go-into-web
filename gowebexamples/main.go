@@ -3,21 +3,23 @@ package main
 import(
     "fmt"
     "net/http"
+    "github.com/gorilla/mux"
 )
 
-func handler(w http.ResponseWriter, r *http.Request){
+func home(w http.ResponseWriter, r *http.Request){
     w.Header().Set("Content-Type","text/html")
-    if r.URL.Path == "/"{
-        fmt.Fprint(w,"<h1> this is the welcome screen</h1>")
-    } else if r.URL.Path == "/contact"{
-        fmt.Fprint(w,"this is the contact page")
-    } else {
-        w.WriteHeader(http.StatusNotFound)
-        fmt.Fprint(w,"404 page with the request")
-    }
+    fmt.Fprint(w,"<h1> this is the welcome screen</h1>")
+
+}
+func contact(w http.ResponseWriter, r *http.Request){
+    w.Header().Set("Content-Type","text/html")
+    fmt.Fprint(w,"this is the contact page")
 }
 
+
 func main(){
-    http.HandleFunc("/",handler)
-    http.ListenAndServe(":8080",nil)
+    rr:=mux.NewRouter()
+    rr.HandleFunc("/",home)
+    rr.HandleFunc("/contact",contact)
+    http.ListenAndServe(":8080",rr)
 }
